@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<title>Sophie Bluel - Architecte d'intérieur</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<meta name="description" content="">
+	<link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+  <div id="bandeauConnexion">
+    <span id="icon"><i class="fas fa-pencil-alt"></i></span>
+    Mode édition
+</div>
+
+</button>
+
+<header>
+	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+	<nav>
+		<ul>
+			<li> projets</li>
+			<li><a href="#contact">contact</a></li>
+			<li><a href="login.html">login</a></li>
+			<li><img src="./assets/icons/instagram.png" alt="Instagram" class="social-icon">      </li>
+		</ul>
+	</nav>
+</header>
+<main>
+	
+	<section id="introduction">
+		<figure>
+			<img src="./assets/images/sophie-bluel.png" alt="">
+		</figure>
+		<article>
+			<h2>Designer d'espace</h2>
+			<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
+			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
+			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
+		</article>
+	</section><nav>
+		<ul>
+		
+
+<!-- HTML -->
+<p class="gallery-heading">Mes projets</p>
+<li id="editProjects">Modifier les projets</li><div id="filterContainer">
+<button class="filter-button" data-category="Tous" onclick="filterProjects('Tous')">Tous</button>
+<button class="filter-button" data-category="Objets" onclick="filterProjects('Objets')">Objet</button>
+<button class="filter-button" data-category="Appartements" onclick="filterProjects('Appartements')">Appartement</button>
+<button class="filter-button" data-category="Hotels & restaurants" onclick="filterProjects('Hotels & restaurants')">Hôtels & restaurants</button>
+
+</div>
+
+	  </ul>
+	</nav>
+  <!-- Modal Section -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+	    <span class="close" onclick="closeModal()">&times;</span>
+	    <p class="gallery-heading">Galerie photo</p> 
+        <section class="gallery">
+	        <form id="projectForm">
+        </section>
+        <input type="submit" id="openNewProjectModalButton" value="Ajouter une photo" onclick="openModalForNewProjectWithoutClosing()">
+    </div>
+
+    <div id="newModal" class="modal modal-content centered-modal">
+        <div id="fleche">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <span class="back-arrow" onclick="closeNewModal()">
+                <i class="fas fa-arrow-left"></i> <!-- Ajustez l'icône de la flèche selon vos préférences -->
+            </span>
+        </div>
+	
+	    <p class="gallery-heading">Ajout photo</p>
+	    <form id="newProjectForm" enctype="multipart/form-data">
+	        <div class="upload-section">
+	            <label for="newProjectImage" id="imageLabel">
+		            <i class="fas fa-image"></i>
+                    <button class="photo" id="addPhotoBtn" onclick="triggerFileInput()"> + Ajouter photo</button> 
+                </label>		
+		        <p id="maxSizeParagraph">JPG, PNG : 4 Mo maximum</p>				
+                <input type="file" id="newProjectImage" name="newProjectImage" accept="image/*" onchange="displaySelectedImage(event)" style="display: none;">   
+	        </div>
+	    </form>
+
+	    <div class="centered-container">
+		<label for="newProjectName">Titre</label>
+		<input type="text" id="newProjectName" name="newProjectName">		
+			<label for="newProjectCategory"> Catégorie</label>
+			<select id="newProjectCategory" name="newProjectCategory">
+				<option value="Tous">Tous</option>
+				<option value="Objets">Objets</option>
+				<option value="Appartements">Appartements</option>
+				<option value="Hôtels&restaurants">Hôtels & restaurants</option>
+				<!-- Ajouter d'autres options selon vos besoins -->
+			</select>
+    </div>
+    <button type="button" id="validerButton" onclick="addNewProject()" disabled>Valider</button>		
+</div>     
+
+<!--Appel uniquement à l'api pour afficher les photos--> 
+<section class="fiches" id="fichesSection"></section>
+
+<script>
+    var modal = document.getElementById('myModal');
+    var newModal = document.getElementById('newModal');
+    var span = document.getElementsByClassName('close')[0];
+	var projectForm = document.getElementById('projectForm');
+	var projectsGallery = document.getElementById('projectsGallery');
+	
+		// Fonction pour réinitialiser le formulaire du modal
+	function resetModalForm() {
+		document.getElementById('projectName').value = '';
+		document.getElementById('projectDescription').value = '';
+	}
+    document.addEventListener('DOMContentLoaded', function () {
+        var filterButtons = document.querySelectorAll('.filter-button');
+
+        filterButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                // Supprimez la classe active de tous les boutons
+                filterButtons.forEach(function (btn) {
+                    btn.classList.remove('active');
+                });
+
+                // Ajoutez la classe active au bouton actuel
+                button.classList.add('active');
+            });
+        });
+    });
+
+    function triggerFileInput() {
+        const fileInput = document.getElementById('newProjectImage');
+        fileInput.click();
+    }
+
+    function activerModeEdition() {
+        // Ajoutez la classe "edition-active" à l'élément du bandeau
+        var bandeauEdition = document.getElementById("bandeauEdition");
+        bandeauEdition.classList.add("edition-active");
+    } 
+
+    // JavaScript
+    function filterProjects(category) {
+        // ... (code pour récupérer les projets depuis l'API)
+
+        // Mise à jour dynamique de l'affichage en fonction de la catégorie sélectionnée
+        const filteredProjects = data.filter(project => {
+            return category === 'Tous' || project.category.name === category;
+        });
+
+        // Affichage des projets filtrés dans la console (adaptez cela à votre interface utilisateur)
+        console.log(filteredProjects);
+
+        // Mise à jour de l'affichage dans votre interface utilisateur
+        updateProjectList(filteredProjects);
+    }
+
+function displaySelectedImage(event) {
+    const input = event.target;
+    const image = document.getElementById('selectedImage');
+        const addPhotoBtn = document.getElementById('addPhotoBtn');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                image.src = e.target.result;
+                image.style.display = 'block';
+                addPhotoBtn.style.display = 'none';
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        } 
+    }
+
+function updateProjectList(projects) {
+    const projectListContainer = document.getElementById('projectList');
+
+    // Effacer le contenu existant
+    projectListContainer.innerHTML = '';
+
+    // Afficher les projets mis à jour
+    projects.forEach(project => {
+        const projectItem = document.createElement('div');
+        projectItem.innerHTML = `
+            <h3>${project.title}</h3>
+            <img src="${project.imageUrl}" alt="${project.title}">
+            <p>Catégorie: ${project.category.name}</p>
+            <!-- Ajoutez d'autres détails du projet selon vos besoins -->
+        `;
+        projectListContainer.appendChild(projectItem);
+    });
+}
+function deleteProjectFromGallery(button) {
+        // Get the parent figure element of the button
+        var figure = button.parentNode;
+
+        // Remove the entire figure element
+        figure.remove();
+    }
+
+    function addNewProject() {
+    // Récupérer les valeurs du formulaire
+    var projectName = document.getElementById('newProjectName').value;
+    var projectCategory = document.getElementById('newProjectCategory').value;
+    var projectImage = document.getElementById('newProjectImage').files[0];
+
+    // Créer une nouvelle figure
+    var newFigure = document.createElement('figure');
+    newFigure.id = 'figure1'; // Remplacer figure1 par figure2 s'il s'agit du deuxième projet
+
+    var image = document.createElement('img');
+    image.src = URL.createObjectURL(projectImage);
+    image.alt = projectName;
+
+    var button = document.createElement('button');
+    button.className = 'delete-button';
+    button.textContent = 'Supprimer';
+    button.onclick = function () {
+        deleteProjectFromGallery(this);
+    };
+
+    newFigure.appendChild(image);
+    newFigure.appendChild(button);
+
+    // Remplacer la figure existante (figure1) par la nouvelle figure
+    var existingFigure = document.getElementById('figure1'); // Remplacer figure1 par figure2 s'il s'agit du deuxième projet
+    existingFigure.replaceWith(newFigure);
+
+    // Fermer le newModal après l'ajout
+    closeNewModal();
+    
+    // Réinitialiser le formulaire du nouveau modal
+    resetNewModalForm();
+}
+function openModalForNewProjectWithoutClosing() {
+    var modal = document.getElementById('newModal');
+    modal.style.display = 'block';
+}
+function closeModal() {
+    var modal = document.getElementById('newModal');
+    // modal.style.display = 'none'; // Commentez ou supprimez cette ligne
+}
+
+		// Fonction pour ouvrir le modal avec un projet spécifique
+		function openModal(projectName) {
+			modal.style.display = 'block';
+			// Réinitialiser le formulaire du modal
+			resetModalForm();
+			// Ajouter ici la logique pour charger les détails du projet dans la fenêtre modale
+			// Vous pouvez utiliser des éléments du DOM pour remplir le formulaire
+			document.getElementById('projectName').value = projectName;
+			document.getElementById('projectDescription').value = "Description du projet " + projectName;
+		}
+		function addNewProject() {
+    // Récupérer les valeurs du formulaire
+    var projectName = document.getElementById('newProjectName').value;
+    var projectCategory = document.getElementById('newProjectCategory').value;
+    var projectImage = document.getElementById('newProjectImage').files[0];
+
+    // Créer une nouvelle figure
+    var newFigure = document.createElement('figure');
+    newFigure.id = 'figure2.linked-figure'; // ou figure2, selon la disponibilité
+
+    var image = document.createElement('img');
+    image.src = URL.createObjectURL(projectImage);
+    image.alt = projectName;
+
+    var button = document.createElement('button');
+    button.className = 'delete-button';
+    button.textContent = 'Supprimer';
+    button.onclick = function () {
+        deleteProjectFromGallery(this);
+    };
+document.addEventListener('DOMContentLoaded', function () {
+    // Sélectionnez la figure sans classe
+    var figureWithoutClass = document.getElementById('figure2');
+
+    // Ajoutez la classe à la figure
+    figureWithoutClass.classList.add('linked-figure');
+});
+function deleteProjectFromGallery(figureId) {
+    // Faire la demande de suppression à l'API
+    const bearerToken = "<votre_token>"; // Remplacez par la logique d'obtention de votre token
+    const apiUrl = `http://localhost:5678/api/works/${figureId}`;
+
+    fetch(apiUrl, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${bearerToken}`
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Item Deleted:', data);
+
+        // Supprimer la figure du DOM côté client
+        const figureToRemove = document.getElementById(`figure${figureId}`);
+        if (figureToRemove) {
+            figureToRemove.remove();
+        }
+    })
+    .catch(error => {
+        console.error('Error deleting item:', error);
+    });// Ajoutez ceci à votre script sur la page principale (index.html)
+document.addEventListener('DOMContentLoaded', function () {
+    // Vérifier si l'utilisateur est connecté en consultant le stockage local
+    var userLoggedIn = localStorage.getItem('userLoggedIn');
+
+    // Si l'utilisateur est connecté, afficher le bouton "Mode édition"
+    if (userLoggedIn === 'true') {
+        document.getElementById('editModeButton').classList.remove('hidden');
+    }
+});if (response.ok) {
+    // Redirection vers la page du site après une authentification réussie
+    window.location.href = 'index.html';
+
+    console.log('Redirected to index.html'); // Ajoutez ce log
+
+    // Afficher le bouton "Mode édition" une fois connecté
+    document.getElementById('editModeButton').classList.remove('hidden');
+} else {
+    // Afficher un message d'erreur
+    document.getElementById('errorMessage').innerText = 'Erreur dans l’identifiant ou le mot de passe';
+}
+function filterProjects(category) {
+    // Construire l'URL de l'API en fonction de la catégorie sélectionnée
+    let apiUrl = 'http://localhost:5678/api/works';
+
+    if (category !== 'Tous') {
+        apiUrl += '?category=' + encodeURIComponent(category);
+    }
+
+    // Effectuer la requête API en utilisant fetch
+    fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Manipuler les données renvoyées par l'API, par exemple, afficher les résultats dans la console
+        console.log(data);
+    })
+    .catch(error => {
+        // Gérer les erreurs, par exemple, afficher une alerte
+        alert('Une erreur s\'est produite lors de la récupération des projets.');
+        console.error(error);
+    });
+}
+document.addEventListener('DOMContentLoaded', function () {
+        // Vérifier si l'utilisateur est connecté en consultant le stockage local
+        var userLoggedIn = localStorage.getItem('userLoggedIn');
+
+        // Si l'utilisateur est connecté, afficher le bouton "Mode édition"
+        if (userLoggedIn === 'true') {
+            console.log('User is logged in. Showing edit button.');
+            document.getElementById('editModeButton').classList.remove('hidden');
+        }
+    });
+}
+
+    newFigure.appendChild(image);
+    newFigure.appendChild(button);
+
+    // Ajouter la nouvelle figure à la galerie principale (figure1 ou figure2)
+    var gallery = document.getElementById('projectsGallery');
+    gallery.appendChild(newFigure);
+
+    // Déplacer le contenu créé vers la page principale
+    var mainContent = document.getElementById('mainContent'); // Remplacez 'mainContent' par l'ID de la section principale
+    mainContent.appendChild(newFigure);
+
+    // Réinitialiser le formulaire du modal
+    resetNewModalForm();
+
+    // Fermer le newModal après l'ajout
+    closeNewModal();
+}
+
+// Fonction pour réinitialiser le formulaire du nouveau modal
+function resetNewModalForm() {
+    document.getElementById('newProjectName').value = '';
+    document.getElementById('newProjectCategory').value = 'Tous';
+    document.getElementById('newProjectImage').value = '';
+}
+
+function displaySelectedImage(event) {
+    var file = event.target.files[0];
+    var imageLabel = document.getElementById("imageLabel");
+    var maxSizeParagraph = document.getElementById("maxSizeParagraph"); // Assurez-vous que l'id correspond à votre paragraphe
+
+    if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var image = document.createElement("img");
+            image.src = e.target.result;
+            image.style.maxWidth = "100%";
+            image.style.maxHeight = "200px";
+            imageLabel.innerHTML = ""; // Efface le contenu précédent de l'élément label
+            imageLabel.appendChild(image);
+
+            // Masquer le paragraphe "JPG, PNG : 4 Mo maximum"
+            if (maxSizeParagraph) {
+                maxSizeParagraph.style.display = "none";
+            }
+        };
+
+        reader.readAsDataURL(file);
+    } else {
+        imageLabel.innerHTML = '<i class="fas fa-image"></i> Ajouter photo';
+
+        // Afficher le paragraphe "JPG, PNG : 4 Mo maximum"
+        if (maxSizeParagraph) {
+            maxSizeParagraph.style.display = "none";
+        }
+    }
+}
+
+		document.getElementById('editProjects').addEventListener('click', function () {
+			openModal("Abajour Tahina");
+		});
+		function previewImage(event) {
+  var imagePreview = document.getElementById("imagePreview");
+  imagePreview.innerHTML = ""; // Efface le contenu précédent de l'aperçu de l'image
+
+  var file = event.target.files[0];
+
+  if (file) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      var image = document.createElement("img");
+      image.src = e.target.result;
+      image.style.maxWidth = "100%";
+      image.style.maxHeight = "200px";
+      imagePreview.appendChild(image);
+    };
+
+    reader.readAsDataURL(file);
+  }
+}
+
+document.getElementById("newProjectImage").addEventListener("change", previewImage);
+		span.addEventListener('click', closeModal);
+		window.addEventListener('click', function (event) {
+			if (event.target == modal) {
+				closeModal();
+			}
+		});
+		function openNewModal() {
+  // Code pour ouvrir le newModal
+  
+  // Fermer le mymodal si ouvert
+  var mymodal = document.getElementById("mymodal");
+  mymodal.style.display = "none";
+}
+
+function openMymodal() {
+  // Code pour ouvrir le mymodal
+  
+  // Fermer le newModal si ouvert
+  var newModal = document.getElementById("newModal");
+  newModal.style.display = "none";
+}
+	// Récupérer la référence du bouton "close"
+var closeButton = document.getElementsByClassName("close")[0];
+
+// Ajouter un gestionnaire d'événements pour le clic sur le bouton "close"
+closeButton.addEventListener("click", function() {
+  // Récupérer la référence au modal
+  var modal = document.getElementById("myModal");
+
+  // Cacher le modal en modifiant la classe CSS
+  modal.style.display = "none";
+});function openModalForNewProject() {
+    // ... Autres actions nécessaires ...
+
+    // Ajouter un événement pour le changement de valeur dans le sélecteur de catégorie
+    var newProjectCategory = document.getElementById('newProjectCategory');
+    newProjectCategory.addEventListener('change', function () {
+        filterProjects(newProjectCategory.value);
+    });
+    function isUserLoggedIn() {
+    // Vérifier si l'état de l'authentification est présent dans le stockage local
+    return localStorage.getItem('userLoggedIn') === 'true';
+}
+}
+function filterProjects(category) {
+    // ... Autres actions nécessaires ...
+
+    // Mettez à jour le code pour prendre en compte la catégorie sélectionnée
+    var projectsContainer = document.getElementById('projectsContainer');
+    projectsContainer.innerHTML = ''; // Effacez le contenu actuel
+
+    // Ajoutez du HTML pour afficher les projets filtrés
+    // Utilisez la variable 'category' pour filtrer les projets
+
+    // Exemple d'utilisation :
+    var filteredProjects = getFilteredProjects(category); // Remplacez par votre logique de filtrage
+    // Ajoutez les projets filtrés au conteneur
+    filteredProjects.forEach(function (project) {
+        projectsContainer.innerHTML += '<figure><img src="' + project.image + '" alt="' + project.title + '"><figcaption>' + project.title + '</figcaption></figure>';
+    });
+}
+
+		// Gérer la soumission du formulaire
+		projectForm.addEventListener('submit', function (event) {
+			// Ajoutez ici la logique pour modifier les projets (par exemple, envoyer une requête AJAX)
+			event.preventDefault(); // Empêche le rechargement de la page
+			// Vous pouvez ajouter ici la logique pour mettre à jour le projet dans la galerie principale
+			var projectName = document.getElementById('projectName').value;
+			var projectElement = document.querySelector('[alt="' + projectName + '"]').parentNode;
+			var projectId = projectElement.dataset.id;
+	
+			projectElement.parentNode.removeChild(projectElement); // Supprime visuellement le projet de la galerie
+			removeProjectFromModal(projectId); // Supprime le projet de la fenêtre modale
+	
+			closeModal(); // Ferme la fenêtre modale après la soumission
+		});
+	
+		function deleteProjectFromGallery(button) {
+			var confirmation = confirm("Voulez-vous vraiment supprimer le projet ?");
+			if (confirmation) {
+				// Trouver l'élément figure parent dans la galerie principale
+				var projectElement = button.parentNode;
+	
+				// Obtenez l'identifiant unique du projet à partir de l'attribut data-id
+				var projectId = projectElement.dataset.id;
+	
+				// Supprimer l'élément du DOM dans la galerie principale
+				projectsGallery.removeChild(projectElement);
+	
+				// Supprimer le projet de la fenêtre modale
+				removeProjectFromModal(projectId);
+	
+				closeModal(); // Ferme la fenêtre modale après la suppression
+			}
+		}
+	function addNewProject() {
+    // Récupérer les valeurs du formulaire
+    var projectName = document.getElementById("newProjectName").value;
+    var projectCategory = document.getElementById("newProjectCategory").value;
+    var projectImage = document.getElementById("newProjectImage").files[0];
+
+    // Créer un nouvel élément figure
+    var newFigure = document.createElement("figure");
+    newFigure.className = "linked-figure";
+
+    // Créer un nouvel élément img
+    var newImage = document.createElement("img");
+    newImage.src = URL.createObjectURL(projectImage); // Utiliser l'URL de l'image téléchargée
+    newImage.alt = projectName;
+
+    // Créer un nouvel élément figcaption
+    var newFigcaption = document.createElement("figcaption");
+    newFigcaption.textContent = projectName + " - " + projectCategory;
+
+    // Ajouter l'image et le figcaption à la figure
+    newFigure.appendChild(newImage);
+    newFigure.appendChild(newFigcaption);
+
+    // Ajouter la nouvelle figure à la galerie
+    var gallery = document.querySelector(".gallery");
+    gallery.appendChild(newFigure);
+
+    // Fermer le modal après ajout du projet
+    closeModal();
+}
+// Supposons que projects soit un tableau d'objets représentant les projets récupérés depuis l'API
+let projects = [
+  { name: "Project 1", category: "Tous" },
+  { name: "Project 2", category: "Objets" },
+  { name: "Project 3", category: "Appartements" },
+  { name: "Project 4", category: "Hôtels&restaurants" },
+
+];
+
+// Fonction pour afficher les projets en fonction de la catégorie sélectionnée
+function filterProjects(category) {
+  // Filtrer les projets en fonction de la catégorie
+  let filteredProjects = category === 'Tous' ? projects : projects.filter(project => project.category === category);
+
+  // Appeler une fonction pour afficher les projets filtrés dans l'interface utilisateur
+  displayProjects(filteredProjects);
+}
+
+// Fonction pour afficher les projets dans l'interface utilisateur
+function displayProjects(projects) {
+  // Supposons que projectList soit l'élément HTML où vous affichez les projets
+  let projectList = document.getElementById("projectList");
+
+  // Effacer le contenu actuel de la liste
+  projectList.innerHTML = "";
+
+  // Ajouter chaque projet à la liste
+  projects.forEach(project => {
+    let listItem = document.createElement("li");
+    listItem.textContent = project.name;
+    projectList.appendChild(listItem);
+  });
+}
+
+// Exemple d'utilisation : lorsque la page est chargée, afficher tous les projets
+filterProjects('Tous');
+		// Fonction pour supprimer un projet de la fenêtre modale
+		function removeProjectFromModal(projectId) {
+			var modalProject = document.querySelector('[data-id="' + projectId + '"]');
+			if (modalProject) {
+				modalProject.parentNode.removeChild(modalProject);
+			}
+		}
+		function previewImage(event) {
+    var input = event.target;
+    var preview = document.getElementById("imagePreview");
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            preview.innerHTML = '<img src="' + e.target.result + '">';
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}function deleteProjectFromGallery(button) {
+    var figure = button.parentElement;
+    var figureId = figure.id;
+
+    // Supprimer l'élément
+    figure.remove();
+
+    // Supprimer l'autre élément
+    var otherFigureId = figureId === 'figure1' ? 'figure2' : 'figure1';
+    var otherFigure = document.getElementById(otherFigureId);
+    if (otherFigure) {
+        otherFigure.remove();
+    }
+}
+
+function addNewProject() {
+    // Récupérer les valeurs du formulaire
+    var projectName = document.getElementById('newProjectName').value;
+    var projectCategory = document.getElementById('newProjectCategory').value;
+    var projectImage = document.getElementById('newProjectImage').files[0];
+
+    // Créer une nouvelle figure
+    var newFigure = document.createElement('figure');
+    newFigure.id = 'figure2'; // ou figure2, selon la disponibilité
+
+    var image = document.createElement('img');
+    image.src = URL.createObjectURL(projectImage);
+    image.alt = projectName;
+
+    var button = document.createElement('button');
+    button.className = 'delete-button';
+    button.textContent = 'Supprimer';
+    button.onclick = function () {
+        deleteProjectFromGallery(this);
+    };
+
+    newFigure.appendChild(image);
+    newFigure.appendChild(button);
+
+    // Ajouter la nouvelle figure à la galerie principale (figure1 ou figure2)
+    var gallery = document.getElementById('projectsGallery');
+    gallery.appendChild(newFigure);
+
+    // Fermer le newModal après l'ajout
+    closeNewModal();
+}
+
+		// Fonction pour réinitialiser le formulaire du nouveau modal
+		function resetNewModalForm() {
+			document.getElementById('newProjectName').value = '';
+			document.getElementById('newProjectDescription').value = '';
+		}
+	
+		// Fonction pour ouvrir le modal avec un nouveau projet
+		function openModalForNewProject() {
+			// Fermer le modal classique
+			closeModal();
+			// Ouvrir le nouveau modal
+			newModal.style.display = 'block';
+			// Réinitialiser le formulaire du nouveau modal
+			resetNewModalForm();
+		}
+	
+		// Fonction pour fermer le nouveau modal
+		function closeNewModal() {
+			newModal.style.display = 'none';
+		}
+		   function openModalForNewProject() {
+        // Fermer le modal classique
+        closeModal();
+        // Ouvrir le nouveau modal
+        document.getElementById('newModal').style.display = 'block';
+        // Réinitialiser le formulaire du nouveau modal
+        resetNewModalForm();
+    }
+
+    // Fonction pour fermer le nouveau modal
+    function closeNewModal() {
+        document.getElementById('newModal').style.display = 'none';
+    }// Supposons que vous avez récupéré les projets depuis l'API
+
+function displayProjects(projects) {
+    const projectsContainer = document.getElementById('projectsContainer');
+    projectsContainer.innerHTML = ''; // Efface le contenu précédent
+
+    projects.forEach(project => {
+        const projectElement = document.createElement('div');
+        projectElement.textContent = project.title;
+        projectsContainer.appendChild(projectElement);
+    });
+}
+// Récupérer la référence du bouton "close"
+var closeButton = document.getElementsByClassName("close")[0];
+
+// Ajouter un gestionnaire d'événements pour le clic sur le bouton "close"
+closeButton.addEventListener("click", function() {
+  // Récupérer la référence au modal
+  var modal = document.getElementById("myModal");
+
+  // Cacher le modal en modifiant la classe CSS
+  modal.style.display = "none";
+});
+function filterProjects(category) {
+    // Filtrer les projets en fonction de la catégorie sélectionnée
+    const filteredProjects = projects.filter(project => project.category === category);
+    displayProjects(filteredProjects);
+}
+function closeNewModal() {
+  var newModal = document.getElementById("newModal");
+  newModal.style.display = "none";
+}
+function saveNewProject() {
+  var newProjectForm = document.getElementById("newProjectForm");
+  // Vous pouvez ici effectuer des actions supplémentaires, telles que la validation des champs et l'envoi du formulaire vers un serveur
+  // Par exemple, vous pouvez utiliser AJAX pour envoyer les données du formulaire sans recharger la page
+  // Après avoir effectué l'action souhaitée, vous pouvez fermer le modal
+  closeNewModal();
+}
+// Afficher tous les projets au chargement initial
+displayProjects(projects);
+var editMode = false; // Variable pour suivre si le mode édition est activé ou non
+
+function enableEditMode() {
+  editMode = true;
+  // Masquer les boutons de filtrage
+  hideFilterButtons();
+  // Afficher les projets en mode édition
+  displayProjectsInEditMode();
+}
+
+
+function displayProjectsInEditMode() {
+  // Afficher tous les projets au chargement initial
+  displayProjects(projects);
+}
+
+
+// Gérer la soumission du formulaire en mode édition
+projectForm.addEventListener('submit', function (event) {
+  if (editMode) {
+	// Ajoutez ici la logique pour modifier les projets en mode édition (par exemple, envoyer une requête AJAX)
+	event.preventDefault(); // Empêche le rechargement de la page
+	closeModal(); // Ferme la fenêtre modale après la soumission
+  }
+});
+function closeModal() {
+  var modal = document.getElementById("myModal");
+  modal.style.display = "none";
+}
+function filterProjects(category) {
+  if (!editMode) {
+	// Filtrer les projets en fonction de la catégorie sélectionnée
+	const filteredProjects = projects.filter(project => project.category === category);
+	displayProjects(filteredProjects);
+  }
+}
+
+
+
+  // Exécute lorsque le DOM est entièrement chargé
+  document.addEventListener('DOMContentLoaded', function () {
+    // Ajouter un événement de clic au bouton "Modifier les projets"
+    var editProjectsButton = document.getElementById('editProjects');
+    if (editProjectsButton) {
+      editProjectsButton.addEventListener('click', function () {
+        toggleEditMode();
+      });
+    }
+  });
+
+
+function filterProjects(categoryId) {
+  var figures = document.querySelectorAll('.linked-figure');
+
+  figures.forEach(function(figure) {
+    var dataCategoryId = parseInt(figure.dataset.categoryId);
+    
+    if (categoryId === 0 || dataCategoryId === categoryId) {
+      figure.classList.remove('hidden');
+    } else {
+      figure.classList.add('hidden');
+    }
+  });
+}
+
+// Afficher toutes les figures au chargement de la page
+filterProjects(0);
+document.addEventListener('DOMContentLoaded', function() {
+    // Ajouter la classe "active" au bouton "Tous"
+    var allFilterButton = document.querySelector('.filter-button[data-category-id="0"]');
+    allFilterButton.classList.add('active');
+});
+
+    // Fonction pour effectuer une requête GET sur l'API
+    async function fetchData() {
+            try {
+                const response = await fetch('http://localhost:5678/api/works', {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données depuis l\'API', error);
+            }
+        }
+
+     
+
+        // Appelez la fonction pour afficher les projets lors du chargement du DOM
+        document.addEventListener('DOMContentLoaded', displayProjects);
+function filterProjects(category) {
+    // Construire l'URL de l'API en fonction de la catégorie sélectionnée
+    let apiUrl = 'http://localhost:5678/api/works';
+
+    if (category !== 'Tous') {
+        apiUrl += '?category=' + encodeURIComponent(category);
+    }
+
+    // Effectuer la requête API en utilisant fetch
+    fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        // Vérifier si la requête a réussi (status 200)
+        if (!response.ok) {
+            throw new Error('Erreur lors de la récupération des projets. Statut : ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Manipuler les données renvoyées par l'API, par exemple, afficher les résultats dans la console
+        console.log(data);
+
+        // Appeler une fonction pour afficher les projets filtrés
+        displayFilteredProjects(data);
+    })
+    .catch(error => {
+        // Gérer les erreurs, par exemple, afficher une alerte
+        alert('Une erreur s\'est produite lors de la récupération des projets : ' + error.message);
+        console.error(error);
+    });
+}
+
+// Fonction pour afficher les projets filtrés
+function displayFilteredProjects(projects) {
+    // Effacer le contenu actuel de la section des fiches
+    const sectionFiches = document.querySelector(".fiches");
+    const gallerySection = document.querySelector(".gallery");
+    sectionFiches.innerHTML = '';
+
+    // Boucler à travers les projets et ajouter les fiches à la section
+    projects.forEach(project => {
+        const pieceElement = document.createElement("article");
+        const imageElement = document.createElement("img");
+        const titleElement = document.createElement("h3");
+
+        imageElement.src = project.imageUrl;
+        titleElement.textContent = project.title;
+
+        pieceElement.appendChild(imageElement);
+        pieceElement.appendChild(titleElement);
+        sectionFiches.appendChild(pieceElement);
+    });
+}
+document.addEventListener('DOMContentLoaded', function () {
+        // Check if the user is logged in
+        if (isLoggedIn()) {
+            // User is logged in, show a message or perform actions
+            alert("You are logged in!"); // You can replace this with your desired action
+        }
+    });
+
+    // Function to check if the user is logged in
+    function isLoggedIn() {
+        // Check if the login flag is present in local storage
+        return localStorage.getItem('isLoggedIn') === 'true';
+    }
+    // Function to log out
+    function logout() {
+        // Update the login status in local storage
+        localStorage.setItem('isLoggedIn', 'false');
+        // Redirect to the login page or perform any other actions
+        window.location.href = 'login.html';
+    }
+    // Vérifier si l'utilisateur est connecté (simulé ici avec une variable)
+var utilisateurConnecte = true; // Changez ceci selon votre logique de connexion
+
+// Sélectionner l'élément du bandeau
+var bandeau = document.getElementById('bandeauConnexion');
+
+// Afficher le bandeau si l'utilisateur est connecté
+if (utilisateurConnecte) {
+    bandeau.style.display = 'block';
+}
+   // Fonction pour récupérer les catégories depuis l'API
+   function getCategories() {
+        return fetch('http://localhost:5678/api/categories')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(categories => categories.map(category => category.name))
+            .catch(error => {
+                console.error('Erreur lors de la requête pour les catégories :', error);
+                return [];
+            });
+    }
+
+    // Fonction pour créer les boutons de filtre avec les catégories récupérées
+    async function createFilterButtons() {
+        const categories = await getCategories();
+
+        const filterContainer = document.getElementById('filterContainer');
+
+        // Créez un bouton "Tous" par défaut
+        const allButton = document.createElement('button');
+        allButton.className = 'filter-button';
+        allButton.dataset.category = 'Tous';
+        allButton.textContent = 'Tous';
+        allButton.onclick = () => filterProjects('Tous');
+        filterContainer.appendChild(allButton);
+
+        // Créez des boutons pour chaque catégorie
+        categories.forEach(category => {
+            const button = document.createElement('button');
+            button.className = 'filter-button';
+            button.dataset.category = category;
+            button.textContent = category;
+            button.onclick = () => filterProjects(category);
+            filterContainer.appendChild(button);
+        });
+    }
+
+    // ... Autres fonctions nécessaires ...
+
+    // Appelez la fonction pour créer les boutons de filtre au chargement de la page
+    createFilterButtons();
+    
+    // Fonction pour afficher les projets filtrés dans la galerie
+function displayFilteredProjectsInGallery(projects) {
+  // Créer une nouvelle section pour la galerie
+  const gallerySection = document.getElementById('projectsGallery');
+  gallerySection.innerHTML = '';
+
+  // Boucler à travers les projets et ajouter les images à la galerie
+  projects.forEach(project => {
+    // Créer une balise <img> pour chaque projet
+    const imgElement = document.createElement('img');
+    imgElement.src = project.imageUrl;
+    imgElement.alt = project.title;
+
+    // Ajouter l'image à la galerie
+    gallerySection.appendChild(imgElement);
+  });
+}
+
+// Appeler la fonction pour récupérer tous les projets au chargement de la page
+document.addEventListener('DOMContentLoaded', () => {
+  filterProjects('Tous');
+});
+
+// Event listener pour le changement de catégorie
+const selectCategory = document.getElementById('selectCategory');
+selectCategory.addEventListener('change', (event) => {
+  const selectedCategory = event.target.value;
+  filterProjects(selectedCategory);
+});
+
+
+
+	</script>
+	
+<button onclick="logout()">Logout</button>
+
+	
+	<section id="contact">
+		<h2>Contact</h2>
+		<p>Vous avez un projet ? Discutons-en !</p>
+		<form action="#" method="post">
+			<label for="name">Nom</label>
+			<input type="text" name="name" id="name">
+			<label for="email">Email</label>
+			<input type="email" name="email" id="email">
+			<label for="message">Message</label>
+			<textarea name="message" id="message" cols="30" rows="10"></textarea>
+			<input type="submit" value="Envoyer">
+		</form>
+	</section>
+</main>
+
+<footer>
+	<nav>
+		<ul>
+			<li>Mentions Légales</li>
+		</ul>
+	</nav>
+</footer>
+</body>
+</html>

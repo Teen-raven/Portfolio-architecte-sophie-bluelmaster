@@ -1,0 +1,716 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/** end reset css**/
+body {
+	max-width: 1140px;
+	margin:auto;
+	font-family: 'Work Sans' ;
+	font-size: 14px;
+}
+header {
+	display: flex;
+	justify-content: space-between;
+	margin: 50px 0
+}
+section {
+	margin: 50px 0
+}
+
+h1{
+	display: flex;
+	flex-direction: column;
+	font-family: 'Syne';
+	font-size: 22px;
+	font-weight: 800;
+	color: #B1663C
+}
+
+h1 > span {
+	font-family: 'Work Sans';
+	font-size:10px;
+	letter-spacing: 0.1em;
+;
+}
+
+h2{
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 30px;
+	color: #1D6154
+}
+nav ul {
+	display: flex;
+	align-items: center;
+	list-style-type: none;
+    justify-content: center;
+}
+nav li {
+	padding: 0 10px;
+	font-size: 1.2em;
+}
+ #fleche > span {
+    display: inline-block;
+	font-size: 20px;
+  }
+li:hover {
+	color: #B1663C;
+}
+#introduction {
+	display: flex;
+	align-items: center;
+}
+#introduction figure {
+	flex: 1
+}
+#introduction img {
+	display: block;
+	margin: auto;
+	width: 80%;
+}
+
+#introduction article {
+	flex: 1
+}
+#introduction h2 {
+	margin-bottom: 1em;
+}
+
+#introduction p {
+	margin-bottom: 0.5em;
+}
+#portfolio h2 {
+	text-align: center;
+	margin-bottom: 1em;
+}
+.gallery {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-column-gap: 20px;
+	grid-row-gap: 20px;
+}
+.gallery-heading {
+    margin-bottom: 43.5px; /* Adjust the value to your preference */
+  }
+.gallery img {
+   width: 100%;
+  }
+  #projectsGallery {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 0fr; /* Adjust the values as needed */
+	gap: 10px; /* Adjust the gap between items according to your preference */
+	border-bottom: 1px solid #111; /* Ajoutez une bordure inférieure grise */}
+  #projectsGallery img {
+	
+	width: 100px;
+    height: 135.08px;
+  }
+#contact {
+	width: 50%;
+margin: auto;
+}
+#contact > * {
+	text-align: center;
+
+}
+.linked-figure {
+    position: relative;
+  }
+.delete-button {
+    position: absolute;
+    top: 5px;
+    right: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+#contact h2{
+	margin-bottom: 20px;
+}
+#contact form {
+	text-align: left;
+	margin-top:30px;
+	display: flex;
+	flex-direction: column;
+}
+
+#contact input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+#contact label {
+	margin: 2em 0 1em 0;
+}
+#contact textarea {
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+
+input[type="submit"]{
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin : 2em auto ;
+	width: 237px;
+	height: 36px;
+	text-align: center;
+	border-radius: 60px ;
+}
+.filter-button.active {
+    background-color: #1D6154;
+    color: white; /* Changer la couleur du texte lorsque le bouton est actif */
+}
+#filterContainer{
+vertical-align: baseline;
+margin-left: 30%;}
+.filter-button {
+    font-family: 'Syne';
+    font-weight: 700;
+    color: #1D6154;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    line-height: normal;
+    margin: 2em auto;
+    height: 36px;
+    border-radius: 60px;
+    cursor: pointer;
+		background: white;
+		margin-right: 10px;
+		border: 1px solid #1D6154;
+}
+#editProjects{
+	margin-top: -25px;
+	display: flex;}
+footer nav ul {
+	display: flex;
+	justify-content: flex-end;
+	margin: 2em
+}
+.img{    
+	max-width: 94%;
+	max-height: 200px;
+	margin-top: -11px;
+}
+#validerButton,
+#openNewProjectModalButton {
+	width: 237px;
+	height: 36px;
+	flex-shrink: 0;
+	border-radius: 60px;
+	background: #1D6154;
+	display: inline-block;
+	text-align: center;
+	line-height: 36px;
+	color: white;
+	cursor: pointer;
+	clear: both; /* Ajout de la propriété clear pour éviter d'être sur la même ligne que d'autres éléments en ligne */
+	margin: 0 auto;}
+
+	#newProjectImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+
+	background-color: rgba(0,0,0,0.7);
+  }
+  #editModeButton {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Assurez-vous que le z-index est plus élevé que les autres éléments de la page */
+}
+a:link,
+a:visited {
+    color: #111; /* Couleur du lien non visité ou visité (par exemple, bleu) */
+    text-decoration: none; /* Supprime le soulignement par défaut */
+}
+
+a:hover,
+a:active {
+    color: #111; /* Couleur du lien survolé ou actif (identique à la couleur de base) */
+    text-decoration: none; /* Supprime le soulignement lors du survol ou de l'activation */
+}
+#validerButton.disabled {
+	background: #ccc; /* Couleur de fond grise pour le bouton désactivé */
+	cursor: not-allowed; /* Curseur en forme de cercle barré pour indiquer qu'il est désactivé */
+}
+  /* Contenu de la fenêtre modale */
+  .modal-content {
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 20%;
+  }
+  #newModal button[type="button"] {
+    font-family: 'Syne';
+    font-weight: 700;
+    color: white;
+    background-color: #1D6154;
+    margin: 2em auto;
+    width: 237px;
+    height: 36px;
+    text-align: center;
+    border-radius: 60px;
+}#projectsGallery {
+	border-bottom: 0.5px solid #B3B3B3; /* Réduisez l'épaisseur de la bordure inférieure */
+	padding-bottom: 20px; /* Ajoutez de l'espace en bas de la galerie */
+
+  }.custom-overlay {
+    /* Styles personnalisés pour le fond du deuxième modal */
+    background-color: rgba(255, 0, 0, 0.5); /* Exemple : fond rouge semi-transparent */
+    /* Autres styles personnalisés... */
+}
+  /* Ajoutez cette classe pour masquer les filtres par défaut */
+.hidden {
+    display: none;
+}
+
+  /* Style pour le bouton de fermeture (croix) */
+  .close {
+	float: right;
+	font-weight: bold;
+	font-size: 20px;}
+  
+  .close:hover,
+  .close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+  }
+  .delete-button {
+
+    overflow: hidden;
+    border: none; /* Supprimer la bordure du bouton */
+    background: none; /* Supprimer l'arrière-plan du bouton */
+  }
+
+  .delete-button i.fa-trash-can {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    background-color: #000; /* Vous pouvez ajuster la couleur d'arrière-plan si nécessaire */
+  }
+
+  .modal-content {
+	display: flex;
+	flex-direction: column;
+
+  }
+  .upload-section {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+		width: 420px;
+	padding: 10px;
+	border-radius: 3px;
+	background: #E8F1F6;
+	height: 169px;
+	margin: 0 auto;
+	margin-bottom: 30px;
+  }
+.gallery-heading {
+    text-align: center;
+    font-family: 'Syne';
+    font-weight: 700;
+    font-size: 30px;
+    color: #1D6154;
+    text-align: center;
+}
+.gallery-item {
+    flex: 0 0 18%; /* Ajustez la largeur des images en fonction de votre mise en page */
+    margin-bottom: 10px; /* Ajoutez une marge inférieure entre les images si nécessaire */
+}
+.centered-container {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.modal-content {
+    width: 630px;
+  }
+#newModal {
+	width: 630px;
+	height: 785px;
+	z-index: 2; /* Set a lower z-index for the modal beneath */
+  }
+  #myModal
+  {
+	display: none; /* Initially hide both modals */
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 2; /* Set a higher z-index for the top modal */
+  }
+  
+
+  
+  .centered-modal {
+	/* Additional styles for the centered modal (newModal) */
+	z-index: 2; /* Make sure this value is higher than the z-index of the base modal */
+  }
+  .modal-content {
+	/* Add your modal content styles here */
+	background-color: #fff;
+	padding: 20px;
+	border: 1px solid #ccc;
+  }
+  #validateButton:disabled {
+	background-color: gray;
+	cursor: not-allowed;
+}
+  /* Add any other necessary styles for your modals */
+  
+  .newProjectName{    
+		margin-bottom: 10px;}
+.photo{
+	width: 173px;
+	height: 36px;
+	border-radius: 50px;
+	background: #CBD6DC;
+	border: none;
+	color: #306685;
+	text-align: center;
+	font-family: "Work Sans";
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+}
+.gallery-head{
+font-family: "Work Sans";
+font-weight: 700;
+font-size: 30px;
+color: black;
+text-align: center;
+margin-bottom: 36px;}
+.newProjectCategory,.newprojectname{
+	margin-bottom: 10px;}
+#newProjectName, #newProjectCategory {
+    height: 51px;
+    flex-shrink: 0;
+    background: #FFF;
+    box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+    border: 1px solid #CCC; /* Ajoutez une bordure pour plus de style */
+    padding: 8px; /* Ajoutez un espace intérieur pour améliorer l'apparence */
+		margin-bottom: 21px;
+		margin-top: 10px;
+  }
+	.newProjectName{		
+		color: #3D3D3D;
+		font-family: "Work Sans";
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 500;
+		line-height: normal;
+		}
+  .centered-modal {
+	position: fixed;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	/* Ajoutez d'autres styles selon vos besoins */
+  }
+.Name{    
+	display: flex;
+	flex-direction: column;
+	margin-right: 93px;
+	margin-left: 93px;
+}
+  
+  #imageLabel i {
+display: flex;
+font-size: 79px;
+  }
+  #projectForm {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between; /* Ajustez selon vos besoins */
+}
+
+.gallery-item {
+	flex: 0 0 18%; /* Ajustez la largeur de chaque figure */
+	margin-bottom: 10px; /* Ajoutez une marge entre les figures */
+}
+
+.gallery-item button {
+	width: 100%; /* La largeur du bouton prend la largeur de la figure */
+}
+.centered-title {
+    text-align: center;
+}
+
+.gallery-item img {
+	max-width: 100%; /* L'image ne dépassera pas la largeur de la figure */
+	height: auto; /* L'image conservera son ratio hauteur/largeur */
+}
+#forgotPassword {
+    margin-top: 10px; /* Ajustez la valeur de la marge selon vos besoins */
+}
+#editModeButton {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%; /* Largeur maximale */
+	background-color: black;
+	color: white;
+	padding: 10px;
+	border: none;
+	border-radius: 0; /* Coins droits, pas de bordure arrondie */
+	cursor: pointer;
+	z-index: 1000; /* Assurez-vous que le bouton est au-dessus de tout le reste */
+  }
+
+  #editModeButton:hover {
+	background-color: darkslategray;
+  }
+  .hidden {
+	display: none;
+  }
+  /* Ajoutez ces styles dans votre feuille de style CSS */
+.fiches {
+    display: flex;
+    flex-wrap: wrap;
+
+    flex-direction: column;
+}
+
+.fiche {
+    text-align: center; /* Centrer le contenu à l'intérieur de chaque fiche */
+    width: 30%; /* Ajuster la largeur pour afficher trois fiches par ligne */
+    margin-bottom: 20px; /* Ajouter une marge en bas pour séparer les fiches verticalement */
+}
+
+.fiche-img {
+    max-width: 33%;
+    margin-bottom: 20px;
+}
+
+.fiche h3 {
+    margin: 0; /* Réinitialiser la marge pour le titre */
+}
+
+section.fiches {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+}
+
+article {
+	text-align: left;
+} img {
+	max-width: 100%; /* Assure que les images ne dépassent pas leur conteneur */
+	height: auto; /* Garantit le redimensionnement proportionnel de l'image */
+}
+#bandeauConnexion {
+	background-color: black !important;
+	color: white !important;
+	padding: 10px;
+	text-align: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1000;
+}
+.newprojectname{
+	margin-top: 30px;
+}
+.newProjectCategory{
+	color: #3D3D3D;
+	font-family: "Work Sans";
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+    }
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+.fa-image:before {
+	content: "\f03e";
+	margin: 0 auto;
+	color: #B9C5CC;
+	margin-top: 10px;
+}
+.trash-icon {
+    position: absolute;
+    top: 0;
+    left: 85%;
+    cursor: pointer;
+    color: white; /* Couleur de l'icône de poubelle (changez-la selon vos préférences) */
+	background-color: black;
+	padding: 2px;
+
+}
+.trait {
+	display: block;
+	width: 420px;
+height: 1px;
+margin: 0 auto;
+	background: #B3B3B3;
+	margin-bottom: 10px; /* Espacement entre le trait et le bouton */
+	margin-top: 47px;
+}
+
+  @media (max-width: 426px) {
+	.body {
+    width: 425px;}
+	.gallery-heading  {
+		font-size: 20px;	
+		padding-top: 20px;}
+		.modal-content {
+			width: 90%
+		}
+		.filter-button{    
+			font-size: 8px;
+			width: 90%;
+			margin-left: 15px;}
+	#editProjects{
+		font-size: 10px;
+		padding-top: 10px;}
+	.gallery-heading{font-size: 15px;}
+	#introduction h2 {font-size: 25px;}
+	#introduction p {
+		font-size: 15px;
+	}
+	#contact h2 {
+	font-size: 20px;
+	}
+	input[type="submit"] {
+	font-size: 10px;
+		width: 210px;
+	
+	}
+
+	#contact label {
+		font-size: 10px;
+	}
+	#contact input {
+		font-size: 10px;
+	}
+	.gallery {
+		width: 90%;
+		margin-left: 20px
+	;
+	}
+	#projectsGallery img {
+		
+		width: 100%;
+		height: 110px;
+	}
+	nav li {
+		padding: 0 10px;
+		font-size: 10px;
+	}
+	.social-icon {
+		width: 70px;
+    height: 18px;
+    max-width: 80%;
+	  }
+	  #contact h2 {
+		font-size: 15px;
+	}
+	#filterContainer {
+    vertical-align: baseline;
+   margin-left: 0%;
+}
+#contact textarea {
+	height: 65px;
+}
+section.fiches {
+	margin: 10px;
+}
+section {
+	margin: 15px 0;
+}
+#newProjectName{
+	height: 10px;
+}
+#newProjectCategory {height: 35px;}
+#newModal {
+	width: 350px;
+	height: 530px;
+	
+}
+.upload-section {
+	width: 300px;
+}
+.trait {
+
+	margin-bottom: 15px;
+	margin-top: 10px;
+}
+.gallery-head {
+	font-size: 22px;
+}
+}
