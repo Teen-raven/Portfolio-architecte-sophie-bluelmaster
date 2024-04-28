@@ -252,36 +252,26 @@ function updateCategoryButtons() {
     });
 }
 let projects = []; // Déclarer et initialiser la variable projects
-function filterProjects(categoryId) {
-    // Mettre à jour la classe active du bouton sélectionné
-    const buttons = document.querySelectorAll('.filter-button');
-    buttons.forEach(button => {
-        button.classList.remove('active');
-    });
-
-    const selectedButton = document.querySelector(`[data-category="${categoryId}"]`);
-    if (selectedButton) {
-        selectedButton.classList.add('active');
-    }
-
-    // Filtrer les projets en fonction de la catégorie sélectionnée
-    const filteredProjects = (categoryId === 'Tous') ? projects : projects.filter(project => project
-        .category.name === categoryId);
-
-    // Appeler la fonction pour afficher les projets filtrés
-    displayFilteredProjects(filteredProjects, categoryId);
-}
-
-// Récupérer les projets depuis l'API
 fetch('http://localhost:5678/api/works')
     .then(response => response.json())
     .then(data => {
         projects = data;
-        // Appeler filterProjects après que les projets sont récupérés
-        filterProjects('0');
+        // Appeler filterProjects après que les projets sont récupérés, en filtrant par défaut sur 'Tous'
+        filterProjects('Tous');
     })
     .catch(error => console.error('Erreur lors de la récupération des projets :', error));
 
+// Définir la fonction filterProjects
+function filterProjects(categoryId) {
+    // Assurez-vous que projects est défini et est un tableau
+    if (Array.isArray(projects)) {
+        // Utiliser la méthode filter() uniquement si projects est un tableau
+        const filteredProjects = (categoryId === 'Tous') ? projects : projects.filter(project => project.category.name === categoryId);
+        // Continuer le reste de la logique...
+    } else {
+        console.error('La variable projects n\'est pas un tableau.');
+    }
+}
 
 
 // Appeler filterProjects après que les projets sont récupérés
