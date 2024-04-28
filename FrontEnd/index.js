@@ -271,13 +271,13 @@ function filterProjects(categoryId) {
     // Appeler la fonction pour afficher les projets filtrés
     displayFilteredProjects(filteredProjects, categoryId);
 }
-
+let projects; 
 // Récupérer les projets depuis l'API
 fetch('http://localhost:5678/api/works')
     .then(response => response.json())
     .then(data => {
         projects = data;
-        // Appeler la fonction pour initialiser les filtres ici si nécessaire
+        
     })
     .catch(error => console.error('Erreur lors de la récupération des projets :', error));
 
