@@ -251,7 +251,7 @@ function updateCategoryButtons() {
         categoryButtonsContainer.appendChild(button);
     });
 }
-
+let projects = []; // Déclarer et initialiser la variable projects
 function filterProjects(categoryId) {
     // Mettre à jour la classe active du bouton sélectionné
     const buttons = document.querySelectorAll('.filter-button');
@@ -271,17 +271,18 @@ function filterProjects(categoryId) {
     // Appeler la fonction pour afficher les projets filtrés
     displayFilteredProjects(filteredProjects, categoryId);
 }
-let projects; 
+
 // Récupérer les projets depuis l'API
 fetch('http://localhost:5678/api/works')
     .then(response => response.json())
     .then(data => {
         projects = data;
-        
+        // Appeler filterProjects après que les projets sont récupérés
+        filterProjects('0');
     })
     .catch(error => console.error('Erreur lors de la récupération des projets :', error));
 
-// ... (le reste de votre code)
+
 
 // Appeler filterProjects après que les projets sont récupérés
 window.addEventListener('load', function () {
