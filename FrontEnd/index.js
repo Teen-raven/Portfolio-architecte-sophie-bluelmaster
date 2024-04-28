@@ -453,36 +453,21 @@ if (storedToken) {
     );
 }
 
+
+// Fonction pour supprimer un projet
 async function deleteProject(projectId) {
     try {
-        // Récupérer le token depuis le sessionStorage
         const token = sessionStorage.getItem('token');
-
-        // Vérifier si le token existe
-        if (!token) {
-            console.error('Token non disponible. Impossible de supprimer le projet.');
-            return;
-        }
-
-        // Effectuer une requête DELETE à l'API avec l'ID du projet et le token d'authentification
         const response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Ajouter le token d'authentification
+                'Authorization': `Bearer ${token}`,
             },
         });
 
         if (response.ok) {
-            // Supprimer le projet de la galerie côté client
-            const gallerySection = document.querySelector(".gallery");
-            const projectElement = gallerySection.querySelector(`[data-id="${projectId}"]`);
-
-            if (projectElement) {
-                projectElement.remove();
-            } else {
-                console.error('Élément du projet non trouvé.');
-            }
+            // Actualiser la galerie après la suppression réussie
+            updateGalleryAfterProjectDeleted();
         } else {
             console.error('La suppression du projet a échoué.');
         }
@@ -490,6 +475,25 @@ async function deleteProject(projectId) {
         console.error('Une erreur s\'est produite lors de la suppression du projet:', error);
     }
 }
+
+// Fonction pour mettre à jour la galerie après la suppression réussie
+async function updateGalleryAfterProjectDeleted() {
+    try {
+        // Récupérer les projets mis à jour depuis le backend
+        const response = await fetch('http://localhost:5678/api/works');
+        if (response.ok) {
+            const updatedProjects = await response.json();
+
+            // Mettre à jour la galerie avec les nouveaux projets
+            displayFilteredProjects(updatedProjects, 'Tous');
+        } else {
+            console.error('Erreur lors de la récupération des projets mis à jour:', response.status);
+        }
+    } catch (error) {
+        console.error('Une erreur s\'est produite lors de la mise à jour de la galerie:', error);
+    }
+}
+
 
 // Fonction pour sauvegarder le projet dans le sessionStorage
 function saveProjectToSessionStorage(projectData) {
@@ -514,67 +518,63 @@ window.addEventListener('load', function () {
     // Appeler la fonction logIn lors du chargement de la page
     logIn();
 });
-async function refreshPage(i){
-    modaleProjets(); // Re lance une génération des projets dans la modale admin
 
-    // supprime le projet de la page d'accueil
-    const projet = document.querySelector(`.js-projet-${i}`);
-    projet.style.display = "none";
+
+// Ajoute un écouteur d'événement au bouton de validation du formulaire
+document.getElementById('validerButton').addEventListener('click', async function () {
+    // Récupérer les données du formulaire
+    const photoFile = document.getElementById('newProjectImage').files[0];
+    const photoTitle = document.getElementById('newProjectName').value;
+    const photoCategory = document.getElementById('newProjectCategory').value;
+
+    // Vérifier si toutes les données sont présentes
+    if (photoFile && photoTitle && photoCategory) {
+        // Créer un objet FormData pour envoyer les données du formulaire
+        const formData = new FormData();
+        formData.append('image', photoFile);
+        formData.append('title', photoTitle);
+        formData.append('category', photoCategory);
+
+        try {
+            const response = await fetch('http://localhost:5678/api/works/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+                },
+            });
+
+            if (response.ok) {
+                updateGalleryAfterProjectAdded();
+            } else {
+                console.error('Erreur lors de l\'ajout du projet:', response.status);
+            }
+        } catch (error) {
+            console.error('Une erreur s\'est produite lors de l\'ajout du projet:', error);
+        }
+    } else {
+        console.error('Veuillez remplir tous les champs du formulaire.');
+    }
+});
+
+// Fonction pour mettre à jour la galerie après l'ajout réussi
+async function updateGalleryAfterProjectAdded() {
+    try {
+        // Récupérer les projets mis à jour depuis le backend
+        const response = await fetch('http://localhost:5678/api/works');
+        if (response.ok) {
+            const updatedProjects = await response.json();
+
+            // Mettre à jour la galerie avec les nouveaux projets
+            displayFilteredProjects(updatedProjects, 'Tous');
+        } else {
+            console.error('Erreur lors de la récupération des projets mis à jour:', response.status);
+        }
+    } catch (error) {
+        console.error('Une erreur s\'est produite lors de la mise à jour de la galerie:', error);
+    }
 }
 
-
-document.addEventListener("DOMContentLoaded", function () {
-    const addPhotoButton = document.getElementById("validerButton");
-
-    addPhotoButton.addEventListener("click", async () => {
-        const photoFile = document.getElementById("newProjectImage").files[0];
-        const photoTitle = document.getElementById("newProjectName").value;
-        const photoCategory = document.getElementById("newProjectCategory").value;
-
-        if (photoFile && photoTitle && photoCategory) {
-            if (photoFile.size > 4 * 1024 * 1024) {
-                alert("La taille de l'image dépasse 4 Mo.");
-                return;
-            }
-
-            const allowedFormats = ["image/jpeg", "image/png"];
-            if (!allowedFormats.includes(photoFile.type)) {
-                alert("Le format de fichier n'est pas pris en charge. Veuillez utiliser JPG ou PNG.");
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append("image", photoFile);
-            formData.append("title", photoTitle);
-            formData.append("category", photoCategory);
-
-            try {
-                const response = await fetch("http://localhost:5678/api/works/", {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-                    },
-                });
-
-                if (response.ok) {
-                    console.log("Projet ajouté avec succès.");
-
-                    // Mettre à jour le DOM avec la réponse en utilisant golive
-                    // Assurez-vous que la réponse contient les données à mettre à jour dans le DOM
-                    golive.post(response);
-                } else {
-                    const errorData = await response.json();
-                    console.log("Erreur lors de l'ajout du projet :", errorData);
-                }
-            } catch (error) {
-                console.log("Erreur lors de l'ajout du projet :", error);
-            }
-        } else {
-            alert("Veuillez remplir tous les champs.");
-        }
-    });
-});
 
 document.addEventListener('DOMContentLoaded', function () {
     const fileInput = document.getElementById('newProjectImage');
