@@ -514,63 +514,66 @@ window.addEventListener('load', function () {
     // Appeler la fonction logIn lors du chargement de la page
     logIn();
 });
+async function refreshPage(i){
+    modaleProjets(); // Re lance une génération des projets dans la modale admin
+
+    // supprime le projet de la page d'accueil
+    const projet = document.querySelector(`.js-projet-${i}`);
+    projet.style.display = "none";
+}
 
 
-const addPhotoButton = document.getElementById("validerButton");
+document.addEventListener("DOMContentLoaded", function () {
+    const addPhotoButton = document.getElementById("validerButton");
 
-addPhotoButton.addEventListener("click", async () => {
-    const photoFile = document.getElementById("newProjectImage").files[0];
-    const photoTitle = document.getElementById("newProjectName").value;
-    const photoCategory = document.getElementById("newProjectCategory").value;
+    addPhotoButton.addEventListener("click", async () => {
+        const photoFile = document.getElementById("newProjectImage").files[0];
+        const photoTitle = document.getElementById("newProjectName").value;
+        const photoCategory = document.getElementById("newProjectCategory").value;
 
-    //  verification taille fichier
-    if (photoFile && photoTitle && photoCategory) {
-        if (photoFile.size > 4 * 1024 * 1024) {
-            alert("La taille de l'image dépasse 4 Mo.");
-            return;
-        }
-
-        //  verification format fichier
-        const allowedFormats = ["image/jpeg", "image/png"];
-        if (!allowedFormats.includes(photoFile.type)) {
-            alert(
-                "Le format de fichier n'est pas pris en charge. Veuillez utiliser JPG ou PNG."
-            );
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append("image", photoFile);
-        formData.append("title", photoTitle);
-        formData.append("category", photoCategory);
-
-        try {
-            const response = await fetch("http://localhost:5678/api/works/", {
-                method: "POST",
-                body: formData,
-                headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-                },
-            });
-            console.log(formData)
-
-            if (response.ok) {
-                /// AJOUT
-                console.log(sessionStorage.getItem("token"));
-                console.log(response)
-
-                // Actualiser la galerie
-
-            } else {
-                const errorData = await response.json();
-                console.log("Erreur lors de l'ajout du projet :", errorData);
+        if (photoFile && photoTitle && photoCategory) {
+            if (photoFile.size > 4 * 1024 * 1024) {
+                alert("La taille de l'image dépasse 4 Mo.");
+                return;
             }
-        } catch (error) {
-            console.log("Erreur lors de l'ajout du projet :", error);
+
+            const allowedFormats = ["image/jpeg", "image/png"];
+            if (!allowedFormats.includes(photoFile.type)) {
+                alert("Le format de fichier n'est pas pris en charge. Veuillez utiliser JPG ou PNG.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("image", photoFile);
+            formData.append("title", photoTitle);
+            formData.append("category", photoCategory);
+
+            try {
+                const response = await fetch("http://localhost:5678/api/works/", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                    },
+                });
+
+                if (response.ok) {
+                    console.log("Projet ajouté avec succès.");
+
+                    // Mettre à jour le DOM avec la réponse en utilisant golive
+                    // Assurez-vous que la réponse contient les données à mettre à jour dans le DOM
+                    golive.post(response);
+                } else {
+                    const errorData = await response.json();
+                    console.log("Erreur lors de l'ajout du projet :", errorData);
+                }
+            } catch (error) {
+                console.log("Erreur lors de l'ajout du projet :", error);
+            }
+        } else {
+            alert("Veuillez remplir tous les champs.");
         }
-    } else {
-        alert("Veuillez remplir tous les champs.");
-    }
+    });
 });
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -89,27 +89,21 @@
                     <!-- Ajustez l'icône de la flèche selon vos préférences -->
                 </span>
             </div>
-            <form id="newProjectForm" action="#" method="GET" enctype="multipart/form-data">
-
-
+            <form id="newProjectForm" enctype="multipart/form-data">
                 <p class="gallery-head">Ajout photo</p>
-
                 <div class="upload-section">
                     <label for="newProjectImage" id="imageLabel">
                         <i class="fas fa-image"></i>
                         <button class="photo" id="addPhotoBtn"> + Ajouter photo</button>
                     </label>
                     <p id="maxSizeParagraph">JPG, PNG : 4 Mo maximum</p>
-                    <input type="file" id="newProjectImage" name="newProjectImage" accept="image/*"
-                        style="display: none;">
+                    <input type="file" id="newProjectImage" name="newProjectImage" accept="image/*" style="display: none;">
                 </div>
-
                 <div class="centered-container">
                     <div class="Name">
                         <label for="newProjectName">Titre</label>
                         <input type="text" id="newProjectName" name="newProjectName" required>
                     </div>
-
                     <div class="Name">
                         <label for="newProjectCategory">Catégorie</label>
                         <select id="newProjectCategory" name="newProjectCategory" required>
@@ -121,12 +115,11 @@
                             <!-- Ajouter d'autres options selon vos besoins -->
                         </select>
                     </div>
-
                     <span class="trait"></span>
-                    <input type="submit" id="validerButton" value="Valider">
+                    <input type="button" id="validerButton" value="Valider">
                 </div>
-
             </form>
+            
 
 
         </div>
