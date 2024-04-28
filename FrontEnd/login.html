@@ -27,13 +27,13 @@
             </ul>
         </nav>
     </header>
-    <button id="editModeButton" onclick="toggleEditMode()" class="hidden">
+    <button id="editModeButton" class="hidden">
         <i class="far fa-pen-square"></i> Mode édition
     </button>
     <section id="contact">
         <h2>Log-in</h2>
 
-        <form id="loginForm" onsubmit="authenticate(event)" action="/FrontEnd/index.html" method="post"
+        <form id="loginForm" action="/FrontEnd/index.html" method="post"
             class="col-sm-12 col-md-11 m-auto">
             <label for="username" class="sr-only">Email:</label>
             <input type="text" id="username" name="login" class="showable-white text-violet"
@@ -52,7 +52,7 @@
 
             <div class="text-center">
                 <button id="loginButton" class="btn bg-violet text-white btn-fl mt-5" type="button"
-                    onclick="authenticate()">Se connecter</button>
+                    >Se connecter</button>
 
 
             </div>

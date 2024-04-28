@@ -38,13 +38,14 @@ function openModal(modalId) {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    const closeButton = document.querySelector("#myModal .close");
 
-document.addEventListener("DOMContentLoaded", function () {
-    const closeButton = document.querySelector("#newModal .close");
-
-    closeButton.addEventListener("click", function () {
-        closeModal("newModal");
+    closeButton.addEventListener('click', function () {
+        closeModal('myModal');
     });
+
+    // Autre code...
 });
 
 function closeModal(modalId) {
@@ -88,13 +89,37 @@ function validate() {
         return;
     }
 }
-
 document.addEventListener("DOMContentLoaded", function () {
+    // Événement pour le bouton "Ajouter une photo" dans le modal
+    document.getElementById('openNewProjectModalButton').addEventListener('click', function () {
+        // Votre logique ici pour ouvrir le modal
+    });
     const openNewProjectModalButton = document.getElementById("openNewProjectModalButton");
     const newModal = document.getElementById("newModal");
 
     openNewProjectModalButton.addEventListener("click", function () {
         newModal.style.display = "block";
+        var button = document.querySelector("#closeModal");
+        button.addEventListener("click", (event) => {
+            var modals = document.querySelectorAll(".modal");
+            modals.forEach(modal => {
+                closeModal(modal.id);
+            });
+            var button = document.querySelector("#closeArrow");
+            button.addEventListener("click", (event) => {
+                closeModal('newModal');
+            });
+            var button = document.querySelector("#myModal");
+            button.addEventListener("click", (event) => {
+                var modals = document.querySelectorAll(".myModal");
+            });
+        });
+
+        var button = document.querySelector("#addPhotoBtn");
+        button.addEventListener("click", (event) => {
+            triggerFileInput();
+        });
+
     });
 });
 
@@ -160,9 +185,6 @@ function previewImage(event) {
 
 
 function openNewModal() {
-    // Code pour ouvrir le newModal
-
-    // Fermer le mymodal si ouvert
     var mymodal = document.getElementById("mymodal");
     mymodal.style.display = "none";
 }
@@ -189,10 +211,6 @@ async function fetchCategories() {
     }
 }
 
-
-
-
-
 function filterProjects(categoryId) {
     // Mettre à jour la classe active du bouton sélectionné
     const buttons = document.querySelectorAll('.filter-button');
@@ -214,14 +232,8 @@ function filterProjects(categoryId) {
     displayFilteredProjects(filteredProjects, categoryId);
 }
 
-
-
-
 function previewImage(event) {
     var input = event.target;
-
-
-
 }
 
 function updateCategoryButtons() {
@@ -239,32 +251,6 @@ function updateCategoryButtons() {
         categoryButtonsContainer.appendChild(button);
     });
 }
-projects = []
-window.addEventListener('load', function () {
-    // Récupérer les projets depuis l'API
-    fetch('http://localhost:5678/api/works')
-        .then(response => response.json())
-        .then(data => {
-            projects = data;
-
-            // Récupérer les catégories depuis l'API
-            fetch('http://localhost:5678/api/categories')
-                .then(response => response.json())
-                .then(categoryData => {
-                    // Traiter les catégories récupérées
-                    console.log('Catégories récupérées :', categoryData);
-
-                    // Appeler la fonction pour initialiser les filtres avec les catégories
-                    initializeFilters(categoryData);
-
-                    // Appeler la fonction pour afficher les projets avec la catégorie par défaut
-                    filterProjects('Tous');
-                })
-                .catch(error => console.error(
-                    'Erreur lors de la récupération des catégories :', error));
-        })
-        .catch(error => console.error('Erreur lors de la récupération des projets :', error));
-});
 
 function filterProjects(categoryId) {
     // Mettre à jour la classe active du bouton sélectionné
@@ -347,55 +333,13 @@ function displayFilteredProjects(projects, selectedCategoryId) {
         pieceElement.appendChild(titleElement);
         sectionFiches.appendChild(pieceElement);
     });
-    var button = document.querySelector("#Tous");
-
-    button.addEventListener("click", (event) => {
-        filterProjects('Tous');
-    });
     var button = document.querySelector("#editProjects");
 
     button.addEventListener("click", (event) => {
         openModal('myModal');
     });
-    var button = document.querySelector("#Objets");
 
-    button.addEventListener("click", (event) => {
-        filterProjects('Objets');
-    });
-    var button = document.querySelector("#Appartements");
-    button.addEventListener("click", (event) => {
-        filterProjects('Appartements');
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        var button = document.querySelector("#Hotels \\& restaurants");
-        if (button) {
-            button.addEventListener("click", (event) => {
-                filterProjects('Hotels & restaurants');
-            });
-        } else {
-            console.error("Élément avec l'identifiant 'Hotels & restaurants' non trouvé.");
-        }
-    });
-    var button = document.querySelector("#closeModal");
-    button.addEventListener("click", (event) => {
-        var modals = document.querySelectorAll(".modal");
-        modals.forEach(modal => {
-            closeModal(modal.id);
-        });
-    });
-    var button = document.querySelector("#closeArrow");
-    button.addEventListener("click", (event) => {
-        closeModal('newModal');
-    });
-    var button = document.querySelector("#addPhotoBtn");
-    button.addEventListener("click", (event) => {
-        triggerFileInput();
-    });
-    var button = document.querySelector("#myModal");
-    button.addEventListener("click", (event) => {
-        var modals = document.querySelectorAll(".myModal");
-    });
- 
+
     // Boucler à travers les projets et ajouter les images avec l'icône "Poubelle" à la galerie
     projects.forEach(project => {
         const pieceElementGallery = document.createElement("article");
@@ -448,16 +392,24 @@ function logIn(loggedIn) {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    const closeButton = document.querySelector("#newModal .close");
+
+    closeButton.addEventListener('click', function () {
+        closeModal('newModal');
+    });
+});
+
+
+
 // Appeler la fonction logIn lors du chargement de la page
 window.addEventListener('load', logIn);
 
-// Fonction de déconnexion
-// Fonction pour gérer la déconnexion
 function logout() {
     // Supprimer l'état de connexion de sessionStorage
     sessionStorage.removeItem('isLoggedIn');
     // Rediriger vers la page de connexion après la déconnexion
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
 }
 
 // Vérifier si l'utilisateur est connecté lors du chargement de la page
@@ -468,13 +420,9 @@ function checkLoginStatus() {
         console.log('Utilisateur connecté');
         // Si l'utilisateur est connecté, afficher le bouton de déconnexion
         document.getElementById('logoutButton').style.display = 'block';
-    } else {
-        console.log('Utilisateur non connecté');
     }
 }
 
-// Appeler la fonction de vérification lors du chargement de la page
-checkLoginStatus();
 
 // Ajouter un gestionnaire d'événements au bouton de déconnexion
 document.getElementById('logoutButton').addEventListener('click', logout);
@@ -529,7 +477,12 @@ async function deleteProject(projectId) {
             // Supprimer le projet de la galerie côté client
             const gallerySection = document.querySelector(".gallery");
             const projectElement = gallerySection.querySelector(`[data-id="${projectId}"]`);
-            projectElement.remove();
+
+            if (projectElement) {
+                projectElement.remove();
+            } else {
+                console.error('Élément du projet non trouvé.');
+            }
         } else {
             console.error('La suppression du projet a échoué.');
         }
@@ -620,6 +573,87 @@ addPhotoButton.addEventListener("click", async () => {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const fileInput = document.getElementById('newProjectImage');
+
+    fileInput.addEventListener('change', function (event) {
+        displaySelectedImage(event);
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Événement pour le bouton "Ajouter photo"
+    document.getElementById('addPhotoBtn').addEventListener('click', function () {
+        triggerFileInput();
+    });
+
+    // Événements pour les boutons de filtre
+    var filterButtons = document.querySelectorAll('.filter-button');
+    filterButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var category = this.getAttribute('data-category');
+            filterProjects(category);
+        });
+    })
+    // Sélection de l'élément input
+    var fileInput = document.getElementById('newProjectImage');
+
+    // Ajout de l'événement 'change'
+    fileInput.addEventListener('change', function (event) {
+        displaySelectedImage(event);
+    });
+
+});
 
 const urlWorks =
     "http://localhost:5678/api-docs/";
+// Catégories de filtres
+const categories = ['Tous', 'Objets', 'Appartements', 'Hotels & restaurants'];
+
+// Fonction pour générer les boutons de filtrage
+function generateFilterButtons() {
+    const filterContainer = document.getElementById('filterContainer');
+
+    // Créer un bouton pour chaque catégorie
+    categories.forEach(category => {
+        const button = document.createElement('button');
+        button.classList.add('filter-button');
+        button.setAttribute('data-category', category);
+        button.textContent = category;
+        filterContainer.appendChild(button);
+    });
+}
+
+// Fonction pour filtrer les éléments en fonction de la catégorie sélectionnée
+function filterProjects(categoryId) {
+    // Mettre à jour la classe active du bouton sélectionné
+    const buttons = document.querySelectorAll('.filter-button');
+    buttons.forEach(button => {
+        button.classList.remove('active');
+    });
+
+    const selectedButton = document.querySelector(`[data-category="${categoryId}"]`);
+    if (selectedButton) {
+        selectedButton.classList.add('active');
+    }
+
+    // Filtrer les projets en fonction de la catégorie sélectionnée
+    const filteredProjects = (categoryId === 'Tous') ? projects : projects.filter(project => project.category.name === categoryId);
+
+    // Appeler la fonction pour afficher les projets filtrés
+    displayFilteredProjects(filteredProjects, categoryId);
+}
+
+// Ajouter des écouteurs d'événements après la génération des boutons
+document.addEventListener('DOMContentLoaded', function () {
+    generateFilterButtons();
+
+    // Ajouter des écouteurs d'événements pour chaque bouton de filtre
+    document.querySelectorAll('.filter-button').forEach(button => {
+        button.addEventListener('click', function () {
+            const categoryId = this.getAttribute('data-category');
+            filterProjects(categoryId);
+        });
+    });
+});

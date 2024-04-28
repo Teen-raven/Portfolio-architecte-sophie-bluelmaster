@@ -55,34 +55,30 @@
                 <!-- HTML -->
                 <p class="gallery-heading">Mes projets</p>
                 <ul>
-                    <li id="editProjects" >
+                    <li id="editProjects">
                         <i class="fas fa-pen-to-square"></i>
                         modifier
                     </li>
- </nav>
-                </ul>
-                <div id="filterContainer">
-                    <button class="filter-button" id="Tous" data-category="Tous">Tous</button>
-                    <button class="filter-button" id="Objets" data-category="Objets">Objets</button>
-                    <button class="filter-button" data-category="Appartements"id="Appartements">Appartements</button>
-                    <button class="filter-button" data-category="Hotels & restaurants" id="Hotels & restaurants"
-                        onclick="filterProjects('Hotels & restaurants')">Hôtels & restaurants</button>
-                </div>
-            </ul>
-       
+        </nav>
+        </ul>
+        <div id="filterContainer">
+
+        </div>
+        </ul>
+
         <!-- Modal Section -->
         <div id="myModal" class="modal">
             <div class="modal-content">
-          
-                <span class="close" onclick="closeModal('myModal')">&times;</span>
+
+                <span class="close">&times;</span>
                 <p class="gallery-heading">Galerie photo</p>
                 <section class="gallery" id="imagePreview">
-                    
-                       </section>   <!-- Vos articles d'image ici -->
-                       <div class="trait"></div>
-                       
-                       <span id="openNewProjectModalButton" id="openModal">Ajouter une photo</span>
-                 </div>
+
+                </section> <!-- Vos articles d'image ici -->
+                <div class="trait"></div>
+
+                <span id="openNewProjectModalButton" id="openModal">Ajouter une photo</span>
+            </div>
         </div>
         <div id="newModal" class="modal modal-content centered-modal custom-modal" style="display: none;">
             <div id="modalOverlay" class="modal-overlay custom-overlay"></div>
@@ -93,38 +89,45 @@
                     <!-- Ajustez l'icône de la flèche selon vos préférences -->
                 </span>
             </div>
-       
-            <p class="gallery-head">Ajout photo</p>
-            <div class="upload-section">
-                <label for="newProjectImage" id="imageLabel">
-                    <i class="fas fa-image"></i>
-                    
-                    <button class="photo" id="addPhotoBtn" onclick="triggerFileInput()"> + Ajouter
-                        photo</button>
-                </label>
-                <p id="maxSizeParagraph">JPG, PNG : 4 Mo maximum</p>
-                <input type="file" id="newProjectImage" name="newProjectImage" accept="image/*" onchange="displaySelectedImage(event)" style="display: none;">
-            </div>
-        
-            <div class="centered-container">
-                <div class="Name">
-                <label for="newProjectName">Titre</label>
-                <input type="text" id="newProjectName" name="newProjectName">
-            </div>
-                <div class="Name">
-                    <label for="newProjectCategory">Catégorie</label>
-                <select id="newProjectCategory" name="newProjectCategory">
-                    <option value="0"></option>
-                    <option value="0">Tous</option>
-                    <option value="1">Objets</option>
-                    <option value="2">Appartements</option>
-                    <option value="3">Hôtels &amp; restaurants</option>
-                    <!-- Ajouter d'autres options selon vos besoins -->
-                </select></div>
-            <span class="trait"></span>
-            <span type="button" id="validerButton">Valider</span>
-        </div>
-        </div>
+            <form id="newProjectForm" action="#" method="GET" enctype="multipart/form-data">
+
+
+                <p class="gallery-head">Ajout photo</p>
+
+                <div class="upload-section">
+                    <label for="newProjectImage" id="imageLabel">
+                        <i class="fas fa-image"></i>
+                        <button class="photo" id="addPhotoBtn"> + Ajouter photo</button>
+                    </label>
+                    <p id="maxSizeParagraph">JPG, PNG : 4 Mo maximum</p>
+                    <input type="file" id="newProjectImage" name="newProjectImage" accept="image/*"
+                        style="display: none;">
+                </div>
+
+                <div class="centered-container">
+                    <div class="Name">
+                        <label for="newProjectName">Titre</label>
+                        <input type="text" id="newProjectName" name="newProjectName" required>
+                    </div>
+
+                    <div class="Name">
+                        <label for="newProjectCategory">Catégorie</label>
+                        <select id="newProjectCategory" name="newProjectCategory" required>
+                            <option value="" disabled selected>Choisissez une catégorie</option>
+                            <option value="0">Tous</option>
+                            <option value="1">Objets</option>
+                            <option value="2">Appartements</option>
+                            <option value="3">Hôtels & restaurants</option>
+                            <!-- Ajouter d'autres options selon vos besoins -->
+                        </select>
+                    </div>
+
+                    <span class="trait"></span>
+                    <input type="submit" id="validerButton" value="Valider">
+                </div>
+
+            </form>
+
 
         </div>
         <section class="fiches" id="fichesSection"></section>
@@ -154,6 +157,7 @@
             </ul>
         </nav>
     </footer>
+    
     <script src="./index.js?v=01"></script>
 </body>
 

@@ -1,4 +1,4 @@
-
+const form=document.getElementById('logInForm')
 
 async function authenticate(event) {
   event.preventDefault(); // Empêche le formulaire de se soumettre normalement
@@ -128,5 +128,45 @@ document.getElementById('logoutButton').style.display = 'block';
 console.log('Utilisateur non connecté');
 }
 }
+// Fonction pour cacher le bouton de connexion et afficher le bouton de déconnexion
+function showLogoutButton() {
+  const logoutButton = document.getElementById('logoutButton');
+  logoutButton.style.display = 'block';
+}
+
+// Fonction pour cacher le bouton de déconnexion et afficher le bouton de connexion
+function showLoginButton() {
+  const loginButton = document.getElementById('loginButton');
+  loginButton.style.display = 'block';
+}
+
+// Fonction pour initialiser l'état des boutons de connexion et de déconnexion
+function initializeButtons() {
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+  
+  if (isLoggedIn) {
+      showLogoutButton();
+  } else {
+      showLoginButton();
+  }
+}
+
+// Ajouter un écouteur d'événement sur le bouton de connexion
+document.getElementById('loginButton').addEventListener('click', authenticate);
+
+// Fonction pour déconnecter l'utilisateur
+function logout() {
+  sessionStorage.removeItem('isLoggedIn');
+  sessionStorage.removeItem('token');
+  
+  // Rediriger vers la page de connexion après la déconnexion
+  window.location.href = 'index.html';
+}
+
+// Ajouter un écouteur d'événement sur le bouton de déconnexion
+document.getElementById('logoutButton').addEventListener('click', logout);
+
+// Appeler la fonction pour initialiser l'état des boutons lors du chargement de la page
+initializeButtons();
 
 }
